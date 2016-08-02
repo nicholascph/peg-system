@@ -1,1 +1,1 @@
-web: lite-server
+web: ng serve
