@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AngularFire, FirebaseListObservable,FirebaseObjectObservable, AuthProviders, AuthMethods} from 'angularfire2';
+import {AngularFire, FirebaseListObservable,FirebaseObjectObservable} from 'angularfire2';
 
 @Component({
   moduleId: module.id,
@@ -22,8 +22,6 @@ export class AppComponent {
   auth:any;
 
   constructor(af: AngularFire) {
-    af.auth.subscribe(auth => this.auth = auth)
-
     this.players = af.database.list('/players')
     this.waitingList = af.database.list('/waitingList')
     this.courts = af.database.list('/courts')

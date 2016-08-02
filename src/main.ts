@@ -3,6 +3,7 @@ import { enableProdMode } from '@angular/core';
 import { AppComponent, environment } from './app/';
 import { FIREBASE_PROVIDERS, defaultFirebase ,firebaseAuthConfig, AuthProviders, AuthMethods} from 'angularfire2';
 
+console.log(environment)
 if (environment.production) {
   enableProdMode();
 }
