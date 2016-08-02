@@ -132,7 +132,6 @@ export class AppComponent {
          }
        })
    })
-   console.log(this.courtsInstance)
     this.courts.update(this.courtsInstance.$key,this.courtsInstance)
  }
 
