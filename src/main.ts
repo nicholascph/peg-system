@@ -15,9 +15,5 @@ bootstrap(AppComponent, [
     authDomain: "badminton-peg.firebaseapp.com",
     databaseURL: "https://badminton-peg.firebaseio.com",
     storageBucket: "badminton-peg.appspot.com"
-}),
-firebaseAuthConfig({
-    provider: AuthProviders.Google,
-    method: AuthMethods.Redirect
-  })
+})
 ]);

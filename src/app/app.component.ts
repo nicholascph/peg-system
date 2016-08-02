@@ -8,12 +8,9 @@ import {AngularFire, FirebaseListObservable,FirebaseObjectObservable, AuthProvid
   styleUrls: ['app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
   currentTime: any = new Date().toLocaleTimeString();
   noOfCourts = 4;
-  // courts :any = [];
   newPlayer :string;
-  // players: any = ["Nicholas","Andy","Laura","Marshall","Gary","Adam","Eddie","Keith","Michael","Niall","Mike Lock","Jish","Cookie","Tim","Tom"];
   players: FirebaseListObservable<any[]>;
   playerInstance : any = [];
   waitingList: FirebaseListObservable<any[]>;
@@ -22,13 +19,13 @@ export class AppComponent {
   courtsInstance:any= [];
   waitingPlayers: FirebaseListObservable<any[]>;
   init:boolean = false;
+  auth:any;
 
   constructor(af: AngularFire) {
-
-    af.auth.subscribe(auth => console.log(auth))
+    af.auth.subscribe(auth => this.auth = auth)
 
     this.players = af.database.list('/players')
-    this.waitingList = af.database.list('/waitngList')
+    this.waitingList = af.database.list('/waitingList')
     this.courts = af.database.list('/courts')
 
     this.players.subscribe((players)=>{
@@ -50,7 +47,6 @@ export class AppComponent {
         if(!this.init)
           this.initialiseCourts(courts)
           this.courtsInstance = courts[0];
-          console.log(this.courtsInstance)
         })
   }
 
@@ -100,17 +96,27 @@ export class AppComponent {
  }
 
  removeAllPlayers(){
-   this.playerInstance.forEach((player:any)=>{
-     this.players.update(player.$key,{waiting:false})
+   this.waitingInstance.forEach((player:any)=>{
+     let key = this.getPlayerKey(player)
+     if(key)
+     this.players.update(key,{waiting:false})
      })
     this.waitingList.remove()
+ }
+
+ getPlayerKey(player){
+   var key = "";
+   this.playerInstance.forEach((players)=>{
+     if(player.name == players.name)
+        key = players.$key
+   })
+   return key;
  }
 
  removePlayer(courtNo:number,player:any){
    if(this.validatePlayer(player)){
       this.waitingList.push(player)
      let i = this.courtsInstance[courtNo].indexOf(player)
-     console.log(i)
      this.courtsInstance[courtNo][i].name = ''
      this.courts.update(this.courtsInstance.$key,this.courtsInstance)
    }
