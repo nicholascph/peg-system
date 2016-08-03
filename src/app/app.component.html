@@ -7,7 +7,7 @@
       <div class="well center">
         <h2 class="text-center">Court {{index + 1}}</h2>
         <div *ngFor="let x of [0,1,2,3]">
-            <button class="padding col-lg-5 col-md-5 col-sm-5 col-xs-5 btn btn-md" (click)="removePlayer(index,court[x])"> {{court[x].name}} </button>
+            <button class="padding col-lg-5 col-md-5 col-sm-5 col-xs-5 btn btn-info btn-md" (click)="removePlayer(index,court[x])"> {{court[x].name}} </button>
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
     <h2>Waiting List   <button  class="btn btn-md btn-danger" (click)="removeAllPlayers()">Clear All</button></h2>
     <div *ngFor="let player of waitingInstance  ;let i = index" class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
           <button *ngIf="i == 0" class="col-lg-8 col-md-10 col-sm-10 col-xs-10 btn btn-md btn-success" (click)="moveToCourt(player)"> {{player.name}} </button>
-          <button *ngIf="i != 0" class="col-lg-8 col-md-10 col-sm-10 col-xs-10 btn btn-md" (click)="moveToCourt(player)"> {{player.name}} </button>
+          <button *ngIf="i != 0" class="col-lg-8 col-md-10 col-sm-10 col-xs-10 btn btn-md btn-info" (click)="moveToCourt(player)"> {{player.name}} </button>
       </div>
   </div>
 
@@ -27,7 +27,7 @@
       <h2>All Players</h2>
     <div *ngFor="let player of playerInstance " class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
       <div [hidden]="!(player.waiting !== true)" >
-          <button class="col-lg-8 col-md-10 col-sm-10 col-xs-10 btn btn-md" (click)="moveToWaitingList(player)"> {{player.name}} </button>
+          <button class="col-lg-8 col-md-10 col-sm-10 col-xs-10 btn btn-info btn-md" (click)="moveToWaitingList(player)"> {{player.name}} </button>
       </div>
       </div>
   </div>
