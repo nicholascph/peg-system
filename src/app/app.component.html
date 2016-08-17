@@ -16,25 +16,25 @@
 
   <div class="well row">
     <h2>Waiting List   <button  class="btn btn-md btn-danger" (click)="removeAllPlayers()">Clear All</button></h2>
-    <div *ngFor="let player of waitingInstance  ;let i = index" class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
-          <button *ngIf="i == 0" class="col-lg-8 col-md-10 col-sm-10 col-xs-10 btn btn-md btn-success" (click)="moveToCourt(player)"> {{player.name}} </button>
-          <button *ngIf="i != 0" class="col-lg-8 col-md-10 col-sm-10 col-xs-10 btn btn-md btn-info" (click)="moveToCourt(player)"> {{player.name}} </button>
+    <div *ngFor="let player of waitingInstance  ;let i = index" class="col-lg-2 col-md-2 col-sm-8 col-xs-12">
+          <button *ngIf="i == 0" id="{{player.name}}" class="col-lg-8 col-md-10 col-sm-12 col-xs-12 btn btn-md btn-success" (mousedown)="ValidateRemovingPlayer($event,player)"  (click)="moveToCourt(player)"> {{player.name}} </button>
+          <button *ngIf="i != 0" id="{{player.name}}" class="col-lg-8 col-md-10 col-sm-12 col-xs-12 btn btn-md btn-info" (mousedown)="ValidateRemovingPlayer($event,player)"  (click)="moveToCourt(player)"> {{player.name}} </button>
       </div>
   </div>
 
 
   <div class="well row">
       <h2>All Players</h2>
-    <div *ngFor="let player of playerInstance " class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+    <div *ngFor="let player of playerInstance " class="col-lg-2 col-md-2 col-sm-8 col-xs-12">
       <div [hidden]="!(player.waiting !== true)" >
-          <button class="col-lg-8 col-md-10 col-sm-10 col-xs-10 btn btn-info btn-md" (click)="moveToWaitingList(player)"> {{player.name}} </button>
+          <button class="col-lg-8 col-md-10 col-sm-12 col-xs-12 btn btn-info btn-md" (click)="moveToWaitingList(player)"> {{player.name}} </button>
       </div>
       </div>
   </div>
 
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <input type="text"  class="form-control" [(ngModel)]="newPlayer" placeholder="Name"/>
+    <input type="text" class="form-control" [(ngModel)]="newPlayer" placeholder="Name"/>
   </div>
 
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

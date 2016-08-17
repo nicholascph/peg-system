@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AngularFire, FirebaseListObservable,FirebaseObjectObservable} from 'angularfire2';
+import 'jquery';
 
+declare var $:JQueryStatic;
 @Component({
   moduleId: module.id,
   selector: 'app-root',
@@ -19,7 +21,8 @@ export class AppComponent {
   courtsInstance:any= [];
   waitingPlayers: FirebaseListObservable<any[]>;
   init:boolean = false;
-  auth:any;
+  firstClick:boolean = false;
+  t: any;
 
   constructor(af: AngularFire) {
     this.players = af.database.list('/players')
@@ -102,6 +105,21 @@ export class AppComponent {
     this.waitingList.remove()
  }
 
+ removePlayerFromWaitingList(player:any,a2Obj:any){
+
+   console.log("removePlayerFromWaitingList function")
+   console.log(a2Obj)
+   console.log(player)
+   let key = a2Obj.getPlayerKey(player)
+   if(key){
+     a2Obj.players.update(key,{waiting:false})
+     a2Obj.waitingList.remove(key)
+     a2Obj.firstClick = false
+     if(a2Obj.t)
+      clearTimeout(a2Obj.t)
+     }
+ }
+
  getPlayerKey(player){
    var key = "";
    this.playerInstance.forEach((players)=>{
@@ -119,8 +137,11 @@ export class AppComponent {
      this.courts.update(this.courtsInstance.$key,this.courtsInstance)
    }
  }
+
+
  moveToCourt(player:any){
    let added = false
+
    this.courtsInstance.forEach((playersOnCourt)=>{
      playersOnCourt.forEach((playerOnCourt)=>{
        if(added !== true && this.validatePlayer(player)){
@@ -160,5 +181,38 @@ export class AppComponent {
      return false
    }
  }
+
+
+ holdit(player, action, start){
+  var element: any = $('#' + player.name);
+  var firstClick = this.firstClick
+  var t = this.t
+
+  var repeat = function () {
+      firstClick = true
+      console.log("repeat firstclick" + firstClick)
+      t = setTimeout(repeat, start);
+      action();
+
+  }
+
+  element.on('mousedown',function() {
+      repeat();
+  })
+
+  element.on('mouseup',function() {
+      clearTimeout(t);
+  })
+
+  }
+
+  ValidateRemovingPlayer(event:any,player:any){
+    var a2Obj = this
+    // this.holdit(player, function () {
+    //   console.log("working on this.holdit")
+    //   a2Obj.removePlayerFromWaitingList(player,a2Obj)
+    // }, 2000);
+  }
+
 
 }
