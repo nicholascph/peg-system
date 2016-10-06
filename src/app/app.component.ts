@@ -21,7 +21,7 @@ export class AppComponent {
   courtsInstance:any= [];
   waitingPlayers: FirebaseListObservable<any[]>;
   init:boolean = false;
-  firstClick:boolean = false;
+  show:boolean = false;
   t: any;
 
   constructor(af: AngularFire) {
@@ -106,15 +106,12 @@ export class AppComponent {
  }
 
  removePlayerFromWaitingList(player:any,a2Obj:any){
-
-   console.log("removePlayerFromWaitingList function")
-   console.log(a2Obj)
-   console.log(player)
    let key = a2Obj.getPlayerKey(player)
-   if(key){
+   let waitingKey = a2Obj.getWaitingPlayerKey(player)
+
+   if(key && waitingKey){
      a2Obj.players.update(key,{waiting:false})
-     a2Obj.waitingList.remove(key)
-     a2Obj.firstClick = false
+     a2Obj.waitingList.remove(waitingKey)
      if(a2Obj.t)
       clearTimeout(a2Obj.t)
      }
@@ -123,6 +120,15 @@ export class AppComponent {
  getPlayerKey(player){
    var key = "";
    this.playerInstance.forEach((players)=>{
+     if(player.name == players.name)
+        key = players.$key
+   })
+   return key;
+ }
+
+ getWaitingPlayerKey(player){
+   var key = "";
+   this.waitingInstance.forEach((players:any)=>{
      if(player.name == players.name)
         key = players.$key
    })
@@ -182,36 +188,30 @@ export class AppComponent {
    }
  }
 
-
- holdit(player, action, start){
+ holdit(player, action){
+  var a2Obj = this
   var element: any = $('#' + player.name);
-  var firstClick = this.firstClick
-  var t = this.t
+  var hold_time = 1000;
+  var t
 
-  var repeat = function () {
-      firstClick = true
-      console.log("repeat firstclick" + firstClick)
-      t = setTimeout(repeat, start);
-      action();
-
-  }
-
-  element.on('mousedown',function() {
-      repeat();
-  })
-
-  element.on('mouseup',function() {
-      clearTimeout(t);
+  element.on('mousedown',()=>{
+      a2Obj.show = false
+      t = setTimeout(action, hold_time)
+  }).on('mouseup mouseleave',()=>{
+      clearTimeout(t)
+  }).on('click',()=>{
+      if(a2Obj.show == false)
+        a2Obj.moveToCourt(player)
   })
 
   }
 
   ValidateRemovingPlayer(event:any,player:any){
     var a2Obj = this
-    // this.holdit(player, function () {
-    //   console.log("working on this.holdit")
-    //   a2Obj.removePlayerFromWaitingList(player,a2Obj)
-    // }, 2000);
+    this.holdit(player, function () {
+      a2Obj.removePlayerFromWaitingList(player,a2Obj)
+      a2Obj.show = true
+    });
   }
 
 
