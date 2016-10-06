@@ -17,8 +17,8 @@
   <div class="well row">
     <h2>Waiting List   <button  class="btn btn-md btn-danger" (click)="removeAllPlayers()">Clear All</button></h2>
     <div *ngFor="let player of waitingInstance  ;let i = index" class="col-lg-2 col-md-2 col-sm-8 col-xs-12">
-          <button *ngIf="i == 0" id="{{player.name}}" class="col-lg-8 col-md-10 col-sm-12 col-xs-12 btn btn-md btn-success" (mousedown)="ValidateRemovingPlayer($event,player)"> {{player.name}} </button>
-          <button *ngIf="i != 0" id="{{player.name}}" class="col-lg-8 col-md-10 col-sm-12 col-xs-12 btn btn-md btn-info" (mousedown)="ValidateRemovingPlayer($event,player)"> {{player.name}} </button>
+          <button *ngIf="i == 0" id="{{player.name}}" class="col-lg-8 col-md-10 col-sm-12 col-xs-12 btn btn-md btn-success" (mouseup)="mouseUpEvent()" (click)="mouseClickEvent(player)" (mousedown)="mouseDownEvent(player)"> {{player.name}} </button>
+          <button *ngIf="i != 0" id="{{player.name}}" class="col-lg-8 col-md-10 col-sm-12 col-xs-12 btn btn-md btn-info" (mouseup)="mouseUpEvent()" (click)="mouseClickEvent(player)" (mousedown)="mouseDownEvent(player)"> {{player.name}} </button>
       </div>
   </div>
 

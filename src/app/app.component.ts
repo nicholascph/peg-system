@@ -21,6 +21,7 @@ export class AppComponent {
   courtsInstance:any= [];
   waitingPlayers: FirebaseListObservable<any[]>;
   init:boolean = false;
+  initEle:boolean = false;
   show:boolean = false;
   t: any;
 
@@ -36,8 +37,7 @@ export class AppComponent {
             var x = a.name.toLowerCase();
             var y = b.name.toLowerCase();
             return x < y ? -1 : x > y ? 1 : 0;
-        }
-      )
+        })
     })
 
       this.waitingList.subscribe((waitingPlayers)=>{
@@ -188,31 +188,26 @@ export class AppComponent {
    }
  }
 
- holdit(player, action){
-  var a2Obj = this
-  var element: any = $('#' + player.name);
-  var hold_time = 1000;
-  var t
+ mouseDownEvent(player){
+   var hold_time = 1000
+   let a2Obj = this
+   a2Obj.show = false
+   a2Obj.t = setTimeout(()=>{
+     a2Obj.removePlayerFromWaitingList(player,a2Obj)
+     a2Obj.show = true
+   }, hold_time)
+ }
 
-  element.on('mousedown',()=>{
-      a2Obj.show = false
-      t = setTimeout(action, hold_time)
-  }).on('mouseup mouseleave',()=>{
-      clearTimeout(t)
-  }).on('click',()=>{
-      if(a2Obj.show == false)
-        a2Obj.moveToCourt(player)
-  })
+ mouseUpEvent(){
+   let a2Obj = this
+       clearTimeout(a2Obj.t)
+   }
 
-  }
-
-  ValidateRemovingPlayer(event:any,player:any){
-    var a2Obj = this
-    this.holdit(player, function () {
-      a2Obj.removePlayerFromWaitingList(player,a2Obj)
-      a2Obj.show = true
-    });
-  }
+ mouseClickEvent(player){
+   let a2Obj = this
+   if(a2Obj.show == false)
+     a2Obj.moveToCourt(player)
+ }
 
 
 }
